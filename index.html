@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count Day</title>
+    <style>
+        /* Gaya tetap sama seperti sebelumnya */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFFFFF;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .countdown-container {
+            background-color: #DEDEDE;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .digit {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+        }
+        .digit span {
+            display: block;
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+        }
+        .digit span.next {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .digit span.current {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .digit span.previous {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        .label {
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <h1>Hitung Mundur</h1>
+        <div class="countdown">
+            <div class="digit" id="days">
+                <span class="current"></span>
+                <span class="next"></span>
+            </div>
+            <div class="label">Hari</div>
+            <div class="digit" id="hours">
+                <span class="current"></span>
+                <span class="next"></span>
+            </div>
+            <div class="label">Jam</div>
+            <div class="digit" id="minutes">
+                <span class="current"></span>
+                <span class="next"></span>
+            </div>
+            <div class="label">Menit</div>
+            <div class="digit" id="seconds">
+                <span class="current"></span>
+                <span class="next"></span>
+            </div>
+            <div class="label">Detik</div>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+
+        function startCountdown(targetDate) {
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                updateDigit("days", days);
+                updateDigit("hours", hours);
+                updateDigit("minutes", minutes);
+                updateDigit("seconds", seconds);
+            }
+
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function updateDigit(id, value) {
+            const digitContainer = document.getElementById(id);
+            const current = digitContainer.querySelector(".current");
+            const next = document.createElement("span");
+            next.textContent = value;
+            next.className = "next";
+
+            if (current && parseInt(current.textContent) === value) return;
+
+            digitContainer.appendChild(next);
+
+            setTimeout(() => {
+                if (current) current.className = "previous";
+                next.className = "current";
+
+                setTimeout(() => {
+                    if (current) current.remove();
+                }, 600);
+            }, 50);
+        }
+
+        window.onload = () => {
+            const targetDate = new Date("2025-02-28T18:14:00").getTime(); // Tetapkan tanggal target
+            startCountdown(targetDate);
+        };
+    </script>
+</body>
+</html>
