@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Count Day</title>
     <style>
-        /* Gaya tetap sama seperti sebelumnya */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #FFFFFF;
@@ -18,12 +17,23 @@
         }
         .countdown-container {
             background-color: #DEDEDE;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-align: center;
+            position: relative;
         }
-        h1 {
+        .transition-bar {
+            position: absolute;
+            top: 45%;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #DEDEDE;
+            transform: translateY(100%);
+            opacity: 0;            
+        }       
+		h1 {
             font-size: 2rem;
             margin-bottom: 20px;
         }
@@ -63,6 +73,16 @@
             font-size: 0.8rem;
             margin-top: 5px;
         }
+
+        /* Tambahan gaya untuk kotak */
+        .box {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #DEDEDE;
+            border: 1px solid #DEDEDE;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -90,10 +110,15 @@
             </div>
             <div class="label">Detik</div>
         </div>
-    </div>
 
-    <script>
-        let countdownInterval;
+        <!-- Tambahan kotak -->
+        <div class="box" id="box1"></div>
+        <div class="box" id="box2"></div>
+        <div class="box" id="box3"></div>
+        <div class="box" id="box4"></div>
+    </div>
+<script>
+    let countdownInterval;
 
         function startCountdown(targetDate) {
             function updateCountdown() {
@@ -141,10 +166,24 @@
             }, 50);
         }
 
+        // Fungsi untuk mengatur posisi kotak
+        function setBoxPosition(boxId, left, top) {
+            const box = document.getElementById(boxId);
+            box.style.left = `${left}px`;
+            box.style.top = `${top}px`;
+        }
+
         window.onload = () => {
             const targetDate = new Date("2025-02-28T18:14:00").getTime(); // Tetapkan tanggal target
             startCountdown(targetDate);
+
+            // Contoh pengaturan posisi kotak
+            setBoxPosition("box1", 30, 136); // Kotak 1 diatur posisinya
+            setBoxPosition("box2", 115, 136); // Kotak 2 diatur posisinya
+            setBoxPosition("box3", 195, 136); // Kotak 3 diatur posisinya
+            setBoxPosition("box4", 290, 136); // Kotak 4 diatur posisinya
         };
     </script>
 </body>
 </html>
+    
